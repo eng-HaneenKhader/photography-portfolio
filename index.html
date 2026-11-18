@@ -156,6 +156,23 @@
     </div>
   </div>
 
+  <div class="gallery-backdrop hidden" id="galleryModal" role="dialog" aria-modal="true" aria-label="Post gallery">
+    <div class="gallery-viewer">
+      <button class="gallery-close" id="galleryClose" aria-label="Close gallery">×</button>
+      <div class="gallery-stage-wrap">
+        <button class="gallery-nav gallery-prev" id="galleryPrev" aria-label="Previous media">‹</button>
+        <div class="gallery-stage" id="galleryStage"></div>
+        <button class="gallery-nav gallery-next" id="galleryNext" aria-label="Next media">›</button>
+        <span class="gallery-counter" id="galleryCounter"></span>
+      </div>
+      <div class="gallery-info">
+        <div class="post-category" id="galleryDetails"></div>
+        <h2 id="galleryTitle"></h2>
+        <p id="galleryCaption"></p>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
   <script type="module" src="/src/main.js"></script>
 </body>
