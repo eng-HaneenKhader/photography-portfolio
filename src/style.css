@@ -44,3 +44,34 @@
 .hero-photo{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;object-position:center;filter:none;background:transparent}
 .photo-note{z-index:3;bottom:-18px;left:-24px}
 @media(max-width:760px){.hero-photo-wrap{height:340px;overflow:visible}}
+
+
+/* Haneen's pink + lavender palette */
+:root{
+  --paper:#fbf5fa;
+  --cream:#f1e7f3;
+  --ink:#30283a;
+  --muted:#817587;
+  --rust:#b66b9b;
+  --sage:#c9b8d9;
+  --line:#e4d6e7;
+  --white:#fffaff;
+}
+body{background:var(--paper);color:var(--ink)}
+.announcement{background:#30283a;color:#fbf5fa}
+.announcement span{color:#e8a9cf}
+.brand span,.intro-content h2 span{color:var(--rust)}
+.hero-photo-wrap{background:#c9b8d9}
+.hero-photo-wrap::before{filter:blur(22px) brightness(1.28) saturate(.68);opacity:.8}
+.photo-note{background:#f3dceB;color:#49364b}
+.photo-note b{color:#b66b9b}
+.intro-section{background:var(--cream)}
+.intro-stamp{border-color:#d4bdd8}
+.intro-stamp span{color:var(--rust)}
+.filter.active,.filter:hover{background:#49364f;border-color:#49364f}
+.post-media{background:#eee3f0}
+.media-count{background:#49364fe8}
+.quote-band{background:#d9c8e5;color:#342a3e}
+.empty-state{border-color:#ddcbe0}
+.empty-flower{color:var(--rust)}
+button:hover,.admin-entry:hover{border-color:var(--rust)}
