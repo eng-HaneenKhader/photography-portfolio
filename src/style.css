@@ -36,3 +36,11 @@
 .hero-photo-wrap::before{content:"";position:absolute;inset:-18px;background-image:url('/images/haneen-jordan-hero.jpg');background-size:cover;background-position:center;filter:blur(18px) brightness(.72);transform:scale(1.08)}
 .hero-photo{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;object-position:center;filter:none;background:transparent}
 @media(max-width:760px){.hero-art{width:90%;max-width:480px;margin:auto}.hero-photo-wrap{width:auto;height:340px;aspect-ratio:auto}}
+
+
+/* Refine the wide hero: soft warm fill, full photo, and visible floating note */
+.hero-photo-wrap{width:auto;height:430px;overflow:visible;isolation:isolate;background:#d9d6c8}
+.hero-photo-wrap::before{content:"";position:absolute;z-index:-1;inset:0;background-image:url('/images/haneen-jordan-hero.jpg');background-size:cover;background-position:center;filter:blur(22px) brightness(1.22) saturate(.72);transform:scale(1.04);opacity:.82}
+.hero-photo{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;object-position:center;filter:none;background:transparent}
+.photo-note{z-index:3;bottom:-18px;left:-24px}
+@media(max-width:760px){.hero-photo-wrap{height:340px;overflow:visible}}
