@@ -21,3 +21,10 @@
 .viewer-prev{left:16px}.viewer-next{right:16px}.viewer-arrow:disabled{opacity:.25;cursor:default}
 .post-card:focus-visible{outline:3px solid var(--rust);outline-offset:4px}
 @media(max-width:760px){.post-viewer{padding:64px 12px 18px}.viewer-content{grid-template-columns:1fr;max-height:90vh;overflow:auto}.viewer-media{min-height:220px;max-height:55vh}.viewer-media img,.viewer-media video{max-height:55vh;max-width:100%}.viewer-details{padding:20px}.viewer-details h2{font-size:25px}.viewer-arrow{top:30%;width:36px;height:48px}.viewer-prev{left:12px}.viewer-next{right:12px}.viewer-close{right:14px;top:10px}}
+
+
+/* Show the complete original portrait banner without cropping */
+.hero-art{display:flex;align-items:center;justify-content:center;min-width:0}
+.hero-photo-wrap{width:min(100%,390px);height:auto;aspect-ratio:3/4;padding:10px;transform:rotate(1deg)}
+.hero-photo{width:100%;height:100%;object-fit:contain;object-position:center;filter:none;background:#e8e3d8}
+@media(max-width:760px){.hero-art{width:100%;max-width:390px;margin:0 auto}.hero-photo-wrap{width:100%;height:auto;aspect-ratio:3/4}}
