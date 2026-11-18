@@ -223,15 +223,70 @@ async function refreshAdmin() {
   });
 }
 
+let galleryPost = null;
+let galleryIndex = 0;
+
+function showGalleryMedia() {
+  const items = galleryPost?.media || [];
+  const item = items[galleryIndex];
+  const stage = $('galleryStage');
+  stage.innerHTML = '';
+  if (!item?.url) return;
+  const media = item.type === 'video' ? document.createElement('video') : document.createElement('img');
+  media.src = item.url;
+  if (media.tagName === 'VIDEO') { media.controls = true; media.autoplay = false; media.playsInline = true; }
+  else { media.alt = galleryPost.title || 'Portfolio photograph'; media.loading = 'eager'; }
+  stage.append(media);
+  $('galleryCounter').textContent = items.length ? `${galleryIndex + 1} / ${items.length}` : '';
+  $('galleryPrev').disabled = items.length < 2;
+  $('galleryNext').disabled = items.length < 2;
+  $('galleryTitle').textContent = galleryPost.title || '';
+  $('galleryCaption').textContent = galleryPost.caption || '';
+  $('galleryDetails').textContent = [galleryPost.category, galleryPost.location].filter(Boolean).join(' · ');
+}
+function openGallery(post) {
+  if (!post.media?.length) return;
+  galleryPost = post;
+  galleryIndex = 0;
+  showGalleryMedia();
+  showModal('galleryModal');
+  document.body.classList.add('gallery-open');
+}
+function closeGallery() {
+  hideModal('galleryModal');
+  $('galleryStage').innerHTML = '';
+  document.body.classList.remove('gallery-open');
+  galleryPost = null;
+}
+function moveGallery(step) {
+  if (!galleryPost?.media?.length) return;
+  galleryIndex = (galleryIndex + step + galleryPost.media.length) % galleryPost.media.length;
+  showGalleryMedia();
+}
+$('galleryClose').addEventListener('click', closeGallery);
+$('galleryPrev').addEventListener('click', () => moveGallery(-1));
+$('galleryNext').addEventListener('click', () => moveGallery(1));
+$('galleryModal').addEventListener('click', e => { if (e.target === $('galleryModal')) closeGallery(); });
+document.addEventListener('keydown', e => {
+  if (!$('galleryModal').classList.contains('hidden')) {
+    if (e.key === 'Escape') closeGallery();
+    if (e.key === 'ArrowLeft') moveGallery(-1);
+    if (e.key === 'ArrowRight') moveGallery(1);
+  }
+});
+
 function createPostCard(post) {
   const card = document.createElement('article');
   card.className = 'post-card';
+  card.tabIndex = 0;
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `Open ${post.title || 'post'} gallery`);
   const mediaWrap = document.createElement('div'); mediaWrap.className = 'post-media';
   const first = post.media?.[0];
   if (first?.url) {
     const media = first.type === 'video' ? document.createElement('video') : document.createElement('img');
     media.src = first.url;
-    if (media.tagName === 'VIDEO') { media.controls = true; media.playsInline = true; }
+    if (media.tagName === 'VIDEO') { media.muted = true; media.playsInline = true; }
     else media.alt = post.title;
     mediaWrap.append(media);
   } else {
@@ -241,7 +296,7 @@ function createPostCard(post) {
     mediaWrap.append(placeholder);
   }
   if ((post.media?.length || 0) > 1) {
-    const count = document.createElement('span'); count.className = 'media-count'; count.textContent = `＋${post.media.length - 1} more`; mediaWrap.append(count);
+    const count = document.createElement('span'); count.className = 'media-count'; count.textContent = `＋${post.media.length - 1} more · Open gallery`; mediaWrap.append(count);
   }
   const meta = document.createElement('div'); meta.className = 'post-meta';
   const category = document.createElement('div'); category.className = 'post-category'; category.textContent = post.category || 'Moment';
@@ -250,6 +305,8 @@ function createPostCard(post) {
   meta.append(category, title, caption);
   if (post.location) { const loc = document.createElement('div'); loc.className = 'post-location'; loc.textContent = `⌖ ${post.location}`; meta.append(loc); }
   card.append(mediaWrap, meta);
+  card.addEventListener('click', () => openGallery(post));
+  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGallery(post); } });
   return card;
 }
 
