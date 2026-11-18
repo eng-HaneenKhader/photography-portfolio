@@ -275,28 +275,79 @@ document.addEventListener('keydown', e => {
   }
 });
 
+let viewerPost = null;
+let viewerIndex = 0;
+function ensurePostViewer() {
+  if ($('postViewer')) return;
+  const backdrop = document.createElement('div');
+  backdrop.id = 'postViewer'; backdrop.className = 'post-viewer hidden';
+  backdrop.innerHTML = `<button class="viewer-close" type="button" aria-label="Close gallery">×</button><button class="viewer-arrow viewer-prev" type="button" aria-label="Previous item">‹</button><div class="viewer-content"><div class="viewer-media" id="viewerMedia"></div><div class="viewer-details"><div class="post-category" id="viewerCategory"></div><h2 id="viewerTitle"></h2><p id="viewerCaption"></p><div class="post-location" id="viewerLocation"></div><div class="viewer-counter" id="viewerCounter"></div><div class="viewer-thumbs" id="viewerThumbs"></div></div></div><button class="viewer-arrow viewer-next" type="button" aria-label="Next item">›</button>`;
+  document.body.append(backdrop);
+  backdrop.querySelector('.viewer-close').addEventListener('click', closePostViewer);
+  backdrop.querySelector('.viewer-prev').addEventListener('click', () => showViewerMedia(viewerIndex - 1));
+  backdrop.querySelector('.viewer-next').addEventListener('click', () => showViewerMedia(viewerIndex + 1));
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closePostViewer(); });
+  document.addEventListener('keydown', e => {
+    if ($('postViewer').classList.contains('hidden')) return;
+    if (e.key === 'Escape') closePostViewer();
+    if (e.key === 'ArrowLeft') showViewerMedia(viewerIndex - 1);
+    if (e.key === 'ArrowRight') showViewerMedia(viewerIndex + 1);
+  });
+}
+function openPostViewer(post) {
+  if (!post.media?.length) return;
+  ensurePostViewer(); viewerPost = post; viewerIndex = 0;
+  $('viewerCategory').textContent = post.category || 'Moment';
+  $('viewerTitle').textContent = post.title || '';
+  $('viewerCaption').textContent = post.caption || '';
+  $('viewerLocation').textContent = post.location ? '⌖ ' + post.location : '';
+  $('postViewer').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+  showViewerMedia(0);
+}
+function closePostViewer() {
+  $('postViewer')?.classList.add('hidden'); document.body.style.overflow = '';
+  const video = $('viewerMedia')?.querySelector('video'); if (video) video.pause();
+}
+function showViewerMedia(index) {
+  if (!viewerPost?.media?.length) return;
+  const mediaList = viewerPost.media; viewerIndex = (index + mediaList.length) % mediaList.length;
+  const item = mediaList[viewerIndex], stage = $('viewerMedia'); stage.innerHTML = '';
+  const el = item.type === 'video' ? document.createElement('video') : document.createElement('img');
+  el.src = item.url;
+  if (item.type === 'video') { el.controls = true; el.playsInline = true; el.preload = 'metadata'; }
+  else { el.alt = viewerPost.title || 'Portfolio photograph'; }
+  stage.append(el);
+  $('viewerCounter').textContent = `${viewerIndex + 1} / ${mediaList.length}`;
+  $('viewerThumbs').innerHTML = '';
+  mediaList.forEach((media, i) => {
+    const thumb = document.createElement('button'); thumb.type = 'button';
+    thumb.className = 'viewer-thumb' + (i === viewerIndex ? ' active' : '');
+    const preview = media.type === 'video' ? document.createElement('video') : document.createElement('img');
+    preview.src = media.url; if (media.type === 'video') preview.muted = true;
+    thumb.append(preview);
+    if (media.type === 'video') { const tag = document.createElement('span'); tag.textContent = '▶'; thumb.append(tag); }
+    thumb.addEventListener('click', () => showViewerMedia(i)); $('viewerThumbs').append(thumb);
+  });
+  $('postViewer').querySelector('.viewer-prev').disabled = mediaList.length < 2;
+  $('postViewer').querySelector('.viewer-next').disabled = mediaList.length < 2;
+}
 function createPostCard(post) {
-  const card = document.createElement('article');
-  card.className = 'post-card';
-  card.tabIndex = 0;
-  card.setAttribute('role', 'button');
-  card.setAttribute('aria-label', `Open ${post.title || 'post'} gallery`);
+  const card = document.createElement('article'); card.className = 'post-card'; card.tabIndex = 0;
+  card.setAttribute('role', 'button'); card.setAttribute('aria-label', `Open ${post.title || 'post'} gallery`);
   const mediaWrap = document.createElement('div'); mediaWrap.className = 'post-media';
   const first = post.media?.[0];
   if (first?.url) {
     const media = first.type === 'video' ? document.createElement('video') : document.createElement('img');
     media.src = first.url;
-    if (media.tagName === 'VIDEO') { media.muted = true; media.playsInline = true; }
+    if (media.tagName === 'VIDEO') { media.controls = false; media.muted = true; media.playsInline = true; }
     else media.alt = post.title;
     mediaWrap.append(media);
   } else {
-    mediaWrap.style.display = 'grid';
-    mediaWrap.style.placeItems = 'center';
-    const placeholder = document.createElement('span'); placeholder.textContent = '✳'; placeholder.style.fontSize = '40px'; placeholder.style.color = '#bd684b';
-    mediaWrap.append(placeholder);
+    mediaWrap.style.display = 'grid'; mediaWrap.style.placeItems = 'center';
+    const placeholder = document.createElement('span'); placeholder.textContent = '✳'; placeholder.style.fontSize = '40px'; placeholder.style.color = '#bd684b'; mediaWrap.append(placeholder);
   }
   if ((post.media?.length || 0) > 1) {
-    const count = document.createElement('span'); count.className = 'media-count'; count.textContent = `＋${post.media.length - 1} more · Open gallery`; mediaWrap.append(count);
+    const count = document.createElement('span'); count.className = 'media-count'; count.textContent = `＋${post.media.length - 1} more`; mediaWrap.append(count);
   }
   const meta = document.createElement('div'); meta.className = 'post-meta';
   const category = document.createElement('div'); category.className = 'post-category'; category.textContent = post.category || 'Moment';
@@ -305,8 +356,8 @@ function createPostCard(post) {
   meta.append(category, title, caption);
   if (post.location) { const loc = document.createElement('div'); loc.className = 'post-location'; loc.textContent = `⌖ ${post.location}`; meta.append(loc); }
   card.append(mediaWrap, meta);
-  card.addEventListener('click', () => openGallery(post));
-  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGallery(post); } });
+  card.addEventListener('click', () => openPostViewer(post));
+  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPostViewer(post); } });
   return card;
 }
 
