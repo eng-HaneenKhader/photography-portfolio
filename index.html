@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f6f1e8" />
+  <meta name="description" content="Haneen Khader — photography, little adventures, places and stories from Jordan." />
+  <title>Haneen Khader — Creative Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div class="announcement" id="announcement">A little collection of places, moments & stories <span>✳</span></div>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Haneen home">haneen<span>.</span></a>
+    <nav class="desktop-nav">
+      <a href="#about">About</a>
+      <a href="#journal">Journal</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="admin-entry" id="adminEntry">Creator login <span>↗</span></button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> AMMAN, JORDAN · CREATIVE JOURNAL</p>
+        <h1>Life is worth<br><em>capturing.</em></h1>
+        <p class="hero-intro">A growing collection of little adventures, beautiful corners, and moments worth remembering.</p>
+        <a class="text-link" href="#journal">EXPLORE THE JOURNAL <span>↘</span></a>
+      </div>
+      <div class="hero-art">
+        <div class="hero-photo-wrap">
+          <img class="hero-photo" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85" alt="Scenic landscape" />
+          <span class="photo-note">collecting moments<br>not things <b>✳</b></span>
+        </div>
+        <span class="hero-side-note">VOL. 01 &nbsp; / &nbsp; JORDAN & BEYOND</span>
+      </div>
+      <div class="hero-bottom"><span>PHOTOGRAPHY</span><span>VIDEO DIARIES</span><span>LOCAL FINDS</span><span>EVERYDAY MAGIC</span></div>
+    </section>
+
+    <section class="intro-section" id="about">
+      <div class="section-kicker">A LITTLE INTRODUCTION</div>
+      <div class="intro-content">
+        <h2>Hello, I'm Haneen<span>.</span></h2>
+        <p>I'm a Computer Science graduate based in Amman, with a creative interest in photography, videography, and discovering local experiences. This is my space to document places, everyday details, and stories through photos and videos.</p>
+        <div class="intro-tags"><span>PHOTOGRAPHY</span><span>VIDEOGRAPHY</span><span>JORDAN</span><span>EVERYDAY STORIES</span></div>
+      </div>
+      <div class="intro-stamp">MADE WITH<br>CURIOUSITY <span>✳</span></div>
+    </section>
+
+    <section class="journal-section" id="journal">
+      <div class="journal-heading">
+        <div>
+          <div class="section-kicker">THE COLLECTION</div>
+          <h2>Recent <em>moments</em></h2>
+        </div>
+        <p>Places I've been, things I've noticed,<br>and memories I've collected.</p>
+      </div>
+      <div class="filters" id="filters">
+        <button class="filter active" data-filter="all">All moments</button>
+        <button class="filter" data-filter="Photography">Photography</button>
+        <button class="filter" data-filter="Travel">Travel</button>
+        <button class="filter" data-filter="Lifestyle">Lifestyle</button>
+        <button class="filter" data-filter="Video">Video diaries</button>
+      </div>
+      <div class="posts-grid" id="postsGrid">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-flower">✳</div>
+          <h3>Your story starts here.</h3>
+          <p>New photos and videos will appear here as they are published.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-band">
+      <span class="quote-mark">“</span>
+      <p>There is beauty in paying attention.</p>
+      <span class="quote-credit">A NOTE TO SELF · HANEEN</span>
+    </section>
+
+    <section class="contact-section" id="contact">
+      <div>
+        <div class="section-kicker">LET'S CONNECT</div>
+        <h2>Have a place<br>to <em>recommend?</em></h2>
+      </div>
+      <div class="contact-right">
+        <p>I'm always happy to discover new corners, local gems, and stories worth sharing.</p>
+        <a class="contact-link" id="emailLink" href="mailto:eng.haneenkhader@gmail.com">SAY HELLO <span>↗</span></a>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/haneen-khader-88552b391" target="_blank" rel="noreferrer">LINKEDIN ↗</a>
+          <a href="https://map.qutrek.com/" target="_blank" rel="noreferrer">QUTREK ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer><a class="brand" href="#">haneen<span>.</span></a><span>MADE OF MOMENTS & MEMORIES</span><span>© <span id="year"></span> HANEEN KHADER</span></footer>
+
+  <div class="modal-backdrop hidden" id="loginModal">
+    <div class="modal login-modal">
+      <button class="modal-close" data-close="loginModal" aria-label="Close">×</button>
+      <div class="section-kicker">CREATOR SPACE</div>
+      <h2>Welcome <em>back.</em></h2>
+      <p class="modal-subtitle">Sign in to manage your creative journal.</p>
+      <form id="loginForm">
+        <label>Email<input type="email" id="loginEmail" required autocomplete="username" placeholder="Your admin email"></label>
+        <label>Password<input type="password" id="loginPassword" required autocomplete="current-password" placeholder="Your password"></label>
+        <button class="primary-button" type="submit">Sign in <span>↗</span></button>
+        <p class="form-message" id="loginMessage"></p>
+      </form>
+      <p class="tiny-note">Admin access is private. Visitors can browse without signing in.</p>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="adminModal">
+    <div class="modal admin-modal">
+      <button class="modal-close" data-close="adminModal" aria-label="Close">×</button>
+      <div class="admin-top">
+        <div><div class="section-kicker">YOUR CREATOR SPACE</div><h2>Manage <em>journal.</em></h2></div>
+        <button class="logout-button" id="logoutButton">Log out ↗</button>
+      </div>
+      <div class="admin-actions">
+        <button class="primary-button" id="newPostButton">＋ Create a post</button>
+        <span id="adminStatus" class="admin-status">You're signed in</span>
+      </div>
+      <div id="adminPostList" class="admin-post-list"></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="postModal">
+    <div class="modal post-editor-modal">
+      <button class="modal-close" data-close="postModal" aria-label="Close">×</button>
+      <div class="section-kicker">CREATIVE JOURNAL</div>
+      <h2 id="editorHeading">Create a <em>moment.</em></h2>
+      <form id="postForm">
+        <input type="hidden" id="postId">
+        <label>Post title<input type="text" id="postTitle" maxlength="100" required placeholder="A little escape..."></label>
+        <label>Caption<textarea id="postCaption" rows="3" maxlength="1200" placeholder="Tell the story behind this moment..."></textarea></label>
+        <div class="form-row">
+          <label>Category<select id="postCategory"><option>Photography</option><option>Travel</option><option>Lifestyle</option><option>Video</option></select></label>
+          <label>Location<input type="text" id="postLocation" maxlength="100" placeholder="Amman, Jordan"></label>
+        </div>
+        <label class="upload-zone" for="postFiles">
+          <span class="upload-icon">＋</span><strong>Add photos or videos</strong>
+          <small>Choose multiple files · Images and videos · Up to 50 MB per file</small>
+          <input type="file" id="postFiles" accept="image/*,video/mp4,video/webm,video/quicktime" multiple>
+        </label>
+        <div id="existingMedia" class="existing-media"></div>
+        <div id="filePreview" class="file-preview"></div>
+        <p class="form-message" id="postMessage"></p>
+        <button class="primary-button" type="submit" id="publishButton">Publish post <span>↗</span></button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
